@@ -1,0 +1,8 @@
+program yas;
+begin
+  setColor(0, 0, 128);
+  fillRect(0, 0, getWidth, getHeight);
+  setColor(255, 255, 0);
+  drawText(encodeText('Bet1lt6s...'), (getWidth - getStringWidth('Betoltes...'))/2, (getHeight - getStringHeight('Betoltes...'))/2);
+  repaint;
+end.

@@ -1,0 +1,66 @@
+program yas;
+var x,y:Array[0..19] of integer;
+    score, live, hiscore, speed, dx, dy, px, py:integer;
+function encodetext(w:string):string;
+var i:integer;
+begin
+ for i:=0 to length(w) do
+ begin
+  if (getChar(w,i)='1') then w:=setChar(w,chr(246),i);
+  if (getChar(w,i)='2') then w:=setChar(w,chr(252),i);
+  if (getChar(w,i)='3') then w:=setChar(w,chr(243),i);
+  if (getChar(w,i)='4') then w:=setChar(w,chr(244),i);
+  if (getChar(w,i)='5') then w:=setChar(w,chr(250),i);
+  if (getChar(w,i)='6') then w:=setChar(w,chr(233),i);
+  if (getChar(w,i)='7') then w:=setChar(w,chr(225),i);
+  if (getChar(w,i)='8') then w:=setChar(w,chr(251),i);
+  if (getChar(w,i)='9') then w:=setChar(w,chr(237),i);
+  if (getChar(w,i)='0') then w:=setChar(w,chr(228),i);
+ end;
+ encodeText:=w;
+end;
+
+begin
+x[0]:=110;
+y[0]:=110;
+
+  setColor(0, 0, 128);
+  fillRect(0, 0, getWidth, getHeight);
+  setColor(255, 255, 0);
+  //drawText(encodeText('Bet1lt6s...'), (getWidth - getStringWidth('Betoltes...'))/2, (getHeight - getStringHeight('Betoltes...'))/2);
+  
+
+  drawRect(10,10,220,220);
+
+setcolor(255,255,255);
+
+fillrect(x[0],y[0],10,10);
+
+repaint;
+
+ {main loop}
+ while finish=false do
+ begin
+
+{card screen}
+
+  if position=101 then
+
+  begin
+
+    if ((getKeyPressed = KE_KEY4) or (keyToAction(getKeyPressed) = GA_LEFT )) and (selectedCard>startCard) then dx:=-10;
+    if ((getKeyPressed = KE_KEY6) or (keyToAction(getKeyPressed) = GA_RIGHT)) and (selectedCard<endCard) then dx:=10;
+    if ((getKeyPressed = KE_KEY2) or (keyToAction(getKeyPressed) = GA_UP  )) then dy:=-10;
+    if ((getKeyPressed = KE_KEY8) or (keyToAction(getKeyPressed) = GA_DOWN)) then dy:=10;
+    if ((getKeyPressed = KE_POUND)) then position:=100;
+
+
+  end;
+
+  {if midlet is interrupted, halt is better}
+  if isMidletPaused then halt;
+  {regular cyclic delay}
+  delay(125);
+
+ end;
+end.

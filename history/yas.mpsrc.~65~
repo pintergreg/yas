@@ -1,0 +1,102 @@
+program yas;
+var x,y:Array[0..19] of integer;
+    score, live, hiscore, speed, dx, dy, px, py:integer;
+    finish:boolean;
+
+function encodetext(w:string):string;
+var i:integer;
+begin
+ for i:=0 to length(w) do
+ begin
+  if (getChar(w,i)='1') then w:=setChar(w,chr(246),i);
+  if (getChar(w,i)='2') then w:=setChar(w,chr(252),i);
+  if (getChar(w,i)='3') then w:=setChar(w,chr(243),i);
+  if (getChar(w,i)='4') then w:=setChar(w,chr(244),i);
+  if (getChar(w,i)='5') then w:=setChar(w,chr(250),i);
+  if (getChar(w,i)='6') then w:=setChar(w,chr(233),i);
+  if (getChar(w,i)='7') then w:=setChar(w,chr(225),i);
+  if (getChar(w,i)='8') then w:=setChar(w,chr(251),i);
+  if (getChar(w,i)='9') then w:=setChar(w,chr(237),i);
+  if (getChar(w,i)='0') then w:=setChar(w,chr(228),i);
+ end;
+ encodeText:=w;
+end;
+
+procedure drawStats();
+var s:string;i:integer;
+begin
+setColor(255, 255, 255);
+//drawText('Score: '+integertostring(score), 9, 240);
+
+//for i:=1 to 64 do
+//for i:=64 to 90 do
+//for i:=91 to 120 do
+for i:=9800 to 9825 do
+begin
+s:=s+chr(i);
+end;
+drawText(s, 0, 10);
+drawText(chr(3), getWidth - getStringWidth('MMMM'), 240);
+end;
+
+begin
+x[0]:=110;
+y[0]:=110;
+dx:=0;
+dy:=10;
+finish:=false;
+speed:=1;
+
+  setColor(0, 0, 128);
+  fillRect(0, 0, getWidth, getHeight);
+  setColor(255, 255, 0);
+  //drawText(encodeText('Bet1lt6s...'), (getWidth - getStringWidth('Betoltes...'))/2, (getHeight - getStringHeight('Betoltes...'))/2);
+  
+  {if 10,10,220,200 then snake deletes the line}
+  drawRect(9,9,221,221);
+
+setcolor(255,255,255);
+fillrect(x[0],y[0],10,10);
+
+drawstats;
+
+repaint;
+
+ {main loop}
+ while finish=false do
+ begin
+
+{game screen}
+  begin
+    if ((getKeyPressed = KE_KEY4) or (keyToAction(getKeyPressed) = GA_LEFT )) then begin dx:=-10;dy:=0;end;
+    if ((getKeyPressed = KE_KEY6) or (keyToAction(getKeyPressed) = GA_RIGHT)) then begin dx:=10;dy:=0;end;
+    if ((getKeyPressed = KE_KEY2) or (keyToAction(getKeyPressed) = GA_UP  )) then begin dy:=-10;dx:=0;end;
+    if ((getKeyPressed = KE_KEY8) or (keyToAction(getKeyPressed) = GA_DOWN)) then begin dy:=10;dx:=0;end;
+    if ((getKeyPressed = KE_POUND)) then finish:=true;
+  end;
+
+if speed=10 then
+begin
+setcolor(00,0,128);
+fillrect(x[0],y[0],10,10);
+
+if (x[0]+dx>=10) and (x[0]+dx<=220) and (y[0]+dy>=10)  and (y[0]+dy<=220)then
+begin
+x[0]:=x[0]+dx;
+y[0]:=y[0]+dy;
+end;
+
+setcolor(255,255,255);
+fillrect(x[0],y[0],10,10);
+
+repaint;
+speed:=1;
+end;
+speed:=speed+1;
+  {if midlet is interrupted, halt is better}
+  if isMidletPaused then halt;
+  {regular cyclic delay}
+  delay(40);
+
+ end;
+end.
