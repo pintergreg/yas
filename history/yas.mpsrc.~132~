@@ -55,9 +55,9 @@ end;
 procedure drawPoint();
 begin
   repeat
-    px:=(random(22)+1)*10;
-    py:=(random(26)+1)*10;
-  until not pointInSnake(px,py);
+  px:=(random(22)+1)*10;
+  py:=(random(26)+1)*10;
+  until not pointInSnake(px,py);{###}
   setColor(255, 255, 255);
   fillRect(px, py, 10, 10);
 end;
@@ -85,6 +85,7 @@ begin
   setColor(0, 0, 128);
   fillRect(0, 0, getWidth, getHeight);
   setColor(255, 255, 0);
+  //drawText(encodeText('Bet1lt6s...'), (getWidth - getStringWidth('Betoltes...'))/2, (getHeight - getStringHeight('Betoltes...'))/2);
   
   {if 10,10,220,220 then snake deletes the line}
   drawRect(9,9,221,261);
@@ -105,10 +106,10 @@ begin
 
     {game screen}
     begin
-      if ((getKeyPressed = KE_KEY4) or (keyToAction(getKeyPressed) = GA_LEFT )) and not (dx=10 ) then begin dx:=-10;dy:=0;end;
-      if ((getKeyPressed = KE_KEY6) or (keyToAction(getKeyPressed) = GA_RIGHT)) and not (dx=-10) then begin dx:=10;dy:=0;end;
-      if ((getKeyPressed = KE_KEY2) or (keyToAction(getKeyPressed) = GA_UP   )) and not (dy=10 ) then begin dy:=-10;dx:=0;end;
-      if ((getKeyPressed = KE_KEY8) or (keyToAction(getKeyPressed) = GA_DOWN )) and not (dy=-10) then begin dy:=10;dx:=0;end;
+      if ((getKeyPressed = KE_KEY4) or (keyToAction(getKeyPressed) = GA_LEFT )) and (dx!=10) then begin dx:=-10;dy:=0;end;
+      if ((getKeyPressed = KE_KEY6) or (keyToAction(getKeyPressed) = GA_RIGHT)) and (dx!=-10) then begin dx:=10;dy:=0;end;
+      if ((getKeyPressed = KE_KEY2) or (keyToAction(getKeyPressed) = GA_UP  )) then begin dy:=-10;dx:=0;end;
+      if ((getKeyPressed = KE_KEY8) or (keyToAction(getKeyPressed) = GA_DOWN)) then begin dy:=10;dx:=0;end;
       if ((getKeyPressed = KE_POUND)) then finish:=true;
     end;
 
@@ -158,5 +159,6 @@ begin
   if isMidletPaused then halt;
   {regular cyclic delay}
   delay(20);
+
  end;
 end.

@@ -7,7 +7,7 @@
 		<resource filename="icon.png" configurations=":all:"/>
 	</Resources>
 	<BuildConfigurations>
-		<configuration name="Default" type="normal" version="1" math="1"/>
+		<configuration name="Default" type="fullscreen" version="1" math="1"/>
 		<ActiveConfiguration index="0"/>
 	</BuildConfigurations>
 </Project>

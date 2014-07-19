@@ -1,7 +1,7 @@
 program yas;
-const max=103;
+const max=49;
 var x,y:Array[0..max] of integer;
-    score, lives, hiscore, clock, speed, dx, dy, px, py, i, snake:integer;
+    score, lives, hiscore, speed, dx, dy, px, py, i, snake:integer;
     finish:boolean;
 
 function encodetext(w:string):string;
@@ -27,15 +27,15 @@ procedure drawStats();
   var s:string;j:integer;
 begin
   setColor(0, 0, 128);
-  fillrect(9,280,112,20);
+  fillrect(9,240,112,20);
   setColor(255, 255, 255);
-  drawText('Score: '+integertostring(score), 9, 280);
+  drawText('Score: '+integertostring(score), 9, 240);
   for j:=1 to lives do
   begin
     s:=s+chr(9829);
   end;
   setColor(255, 0, 0);
-  drawText(s, getWidth - getStringWidth(s)-10, 280);
+  drawText(s, getWidth - getStringWidth(s)-10, 240);
 end;
 
 function pointInSnake(nx,ny:integer):boolean;
@@ -54,10 +54,10 @@ end;
 
 procedure drawPoint();
 begin
-  repeat
-    px:=(random(22)+1)*10;
-    py:=(random(26)+1)*10;
-  until not pointInSnake(px,py);
+  {repeat}
+  px:=(random(22)+1)*10;
+  py:=(random(22)+1)*10;
+  {until not pointInSnake(px,py);{###}
   setColor(255, 255, 255);
   fillRect(px, py, 10, 10);
 end;
@@ -78,17 +78,17 @@ begin
   dx:=0;
   dy:=10;
   finish:=false;
-  clock:=1;
+  speed:=1;
   lives:=3;
   randomize;
 
   setColor(0, 0, 128);
   fillRect(0, 0, getWidth, getHeight);
   setColor(255, 255, 0);
+  //drawText(encodeText('Bet1lt6s...'), (getWidth - getStringWidth('Betoltes...'))/2, (getHeight - getStringHeight('Betoltes...'))/2);
   
-  {if 10,10,220,220 then snake deletes the line}
-  drawRect(9,9,221,261);
-  drawRect(8,8,223,263);
+  {if 10,10,220,200 then snake deletes the line}
+  drawRect(9,9,221,221);
 
   setcolor(255,255,255);
   fillrect(x[0],y[0],10,10);
@@ -105,15 +105,14 @@ begin
 
     {game screen}
     begin
-      if ((getKeyPressed = KE_KEY4) or (keyToAction(getKeyPressed) = GA_LEFT )) and not (dx=10 ) then begin dx:=-10;dy:=0;end;
-      if ((getKeyPressed = KE_KEY6) or (keyToAction(getKeyPressed) = GA_RIGHT)) and not (dx=-10) then begin dx:=10;dy:=0;end;
-      if ((getKeyPressed = KE_KEY2) or (keyToAction(getKeyPressed) = GA_UP   )) and not (dy=10 ) then begin dy:=-10;dx:=0;end;
-      if ((getKeyPressed = KE_KEY8) or (keyToAction(getKeyPressed) = GA_DOWN )) and not (dy=-10) then begin dy:=10;dx:=0;end;
+      if ((getKeyPressed = KE_KEY4) or (keyToAction(getKeyPressed) = GA_LEFT )) then begin dx:=-10;dy:=0;end;
+      if ((getKeyPressed = KE_KEY6) or (keyToAction(getKeyPressed) = GA_RIGHT)) then begin dx:=10;dy:=0;end;
+      if ((getKeyPressed = KE_KEY2) or (keyToAction(getKeyPressed) = GA_UP  )) then begin dy:=-10;dx:=0;end;
+      if ((getKeyPressed = KE_KEY8) or (keyToAction(getKeyPressed) = GA_DOWN)) then begin dy:=10;dx:=0;end;
       if ((getKeyPressed = KE_POUND)) then finish:=true;
     end;
 
-  {speed 20}
-  if clock=10 then
+  if speed=20 then
   begin
     setcolor(0,0,128);
     for i:=0 to snake do
@@ -121,7 +120,7 @@ begin
       fillrect(x[i],y[i],10,10);
     end;
 
-    if (x[0]+dx>=10) and (x[0]+dx<=220) and (y[0]+dy>=10) and (y[0]+dy<=260)then
+    if (x[0]+dx>=10) and (x[0]+dx<=220) and (y[0]+dy>=10)  and (y[0]+dy<=220)then
     begin
     for i:=snake downto 1 do
     begin
@@ -136,7 +135,6 @@ begin
       begin
         drawpoint;
         score:=score+1;
-        if snake<max-2 then
         snake:=snake+1;
         drawstats;
       end;
@@ -149,14 +147,16 @@ begin
     end;
 
     repaint;
-    clock:=1;
+    speed:=1;
   end;
 
-  clock:=clock+1;
+  speed:=speed+1;
+
 
   {if midlet is interrupted, halt is better}
   if isMidletPaused then halt;
   {regular cyclic delay}
   delay(20);
+
  end;
 end.

@@ -55,9 +55,9 @@ end;
 procedure drawPoint();
 begin
   repeat
-    px:=(random(22)+1)*10;
-    py:=(random(26)+1)*10;
-  until not pointInSnake(px,py);
+  px:=(random(22)+1)*10;
+  py:=(random(26)+1)*10;
+  until not pointInSnake(px,py);{###}
   setColor(255, 255, 255);
   fillRect(px, py, 10, 10);
 end;
@@ -85,6 +85,7 @@ begin
   setColor(0, 0, 128);
   fillRect(0, 0, getWidth, getHeight);
   setColor(255, 255, 0);
+  //drawText(encodeText('Bet1lt6s...'), (getWidth - getStringWidth('Betoltes...'))/2, (getHeight - getStringHeight('Betoltes...'))/2);
   
   {if 10,10,220,220 then snake deletes the line}
   drawRect(9,9,221,261);
@@ -158,5 +159,6 @@ begin
   if isMidletPaused then halt;
   {regular cyclic delay}
   delay(20);
+
  end;
 end.
