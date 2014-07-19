@@ -1,0 +1,161 @@
+program yas;
+const max=103;
+var x,y:Array[0..max] of integer;
+    score, lives, hiscore, clock, speed, dx, dy, px, py, i, snake:integer;
+    finish:boolean;
+
+function encodetext(w:string):string;
+  var i:integer;
+begin
+ for i:=0 to length(w) do
+ begin
+  if (getChar(w,i)='1') then w:=setChar(w,chr(246),i);
+  if (getChar(w,i)='2') then w:=setChar(w,chr(252),i);
+  if (getChar(w,i)='3') then w:=setChar(w,chr(243),i);
+  if (getChar(w,i)='4') then w:=setChar(w,chr(244),i);
+  if (getChar(w,i)='5') then w:=setChar(w,chr(250),i);
+  if (getChar(w,i)='6') then w:=setChar(w,chr(233),i);
+  if (getChar(w,i)='7') then w:=setChar(w,chr(225),i);
+  if (getChar(w,i)='8') then w:=setChar(w,chr(251),i);
+  if (getChar(w,i)='9') then w:=setChar(w,chr(237),i);
+  if (getChar(w,i)='0') then w:=setChar(w,chr(228),i);
+ end;
+ encodeText:=w;
+end;
+
+procedure drawStats();
+  var s:string;j:integer;
+begin
+  setColor(0, 0, 128);
+  fillrect(9,280,112,20);
+  setColor(255, 255, 255);
+  drawText('Score: '+integertostring(score), 9, 280);
+  for j:=1 to lives do
+  begin
+    s:=s+chr(9829);
+  end;
+  setColor(255, 0, 0);
+  drawText(s, getWidth - getStringWidth(s)-10, 280);
+end;
+
+function pointInSnake(nx,ny:integer):boolean;
+  var j:integer;
+begin
+  pointInSnake:=false;
+  for j:=0 to snake do
+  begin
+    if (nx=x[j]) and (ny=y[j]) then
+    begin
+      pointInSnake:=true;
+      break;
+    end;
+  end;
+end;
+
+procedure drawPoint();
+begin
+  repeat
+    px:=(random(22)+1)*10;
+    py:=(random(26)+1)*10;
+  until not pointInSnake(px,py);
+  setColor(255, 255, 255);
+  fillRect(px, py, 10, 10);
+end;
+
+begin
+  x[0]:=110;
+  y[0]:=110;
+  x[1]:=110;
+  y[1]:=100;
+  x[2]:=110;
+  y[2]:=90;
+  snake:=2;
+  for i:=3 to max do
+    begin
+      x[i]:=-10;
+      y[i]:=-10;
+    end;
+  dx:=0;
+  dy:=10;
+  finish:=false;
+  clock:=1;
+  lives:=3;
+  randomize;
+
+  setColor(0, 0, 128);
+  fillRect(0, 0, getWidth, getHeight);
+  setColor(255, 255, 0);
+  
+  {if 10,10,220,220 then snake deletes the line}
+  drawRect(9,9,221,261);
+  drawRect(8,8,223,263);
+
+  setcolor(255,255,255);
+  fillrect(x[0],y[0],10,10);
+  fillrect(x[1],y[1],10,10);
+  fillrect(x[2],y[2],10,10);
+
+  drawstats;
+  drawpoint;
+  repaint;
+
+ {main loop}
+ while finish=false do
+ begin
+
+    {game screen}
+    begin
+      if ((getKeyPressed = KE_KEY4) or (keyToAction(getKeyPressed) = GA_LEFT )) and not (dx=10 ) then begin dx:=-10;dy:=0;end;
+      if ((getKeyPressed = KE_KEY6) or (keyToAction(getKeyPressed) = GA_RIGHT)) and not (dx=-10) then begin dx:=10;dy:=0;end;
+      if ((getKeyPressed = KE_KEY2) or (keyToAction(getKeyPressed) = GA_UP   )) and not (dy=10 ) then begin dy:=-10;dx:=0;end;
+      if ((getKeyPressed = KE_KEY8) or (keyToAction(getKeyPressed) = GA_DOWN )) and not (dy=-10) then begin dy:=10;dx:=0;end;
+      if ((getKeyPressed = KE_POUND)) then finish:=true;
+    end;
+
+  {speed 20}
+  if clock=10 then
+  begin
+    setcolor(0,0,128);
+    for i:=0 to snake do
+    begin
+      fillrect(x[i],y[i],10,10);
+    end;
+
+    if (x[0]+dx>=10) and (x[0]+dx<=220) and (y[0]+dy>=10) and (y[0]+dy<=260)then
+    begin
+    for i:=snake downto 1 do
+    begin
+      x[i]:=x[i-1];
+      y[i]:=y[i-1];
+    end;
+    x[0]:=x[0]+dx;
+    y[0]:=y[0]+dy;
+
+      {scoring}
+      if (px=x[0]) and (py=y[0]) then
+      begin
+        drawpoint;
+        score:=score+1;
+        if snake<max-2 then snake:=snake+1;
+        drawstats;
+      end;
+    end;
+
+    setcolor(255,255,255);
+    for i:=0 to snake do
+    begin
+      fillrect(x[i],y[i],10,10);
+    end;
+
+    repaint;
+    clock:=1;
+  end;
+
+  clock:=clock+1;
+
+  {if midlet is interrupted, halt is better}
+  if isMidletPaused then halt;
+  {regular cyclic delay}
+  delay(20);
+ end;
+end.

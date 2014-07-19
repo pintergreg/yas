@@ -84,11 +84,6 @@ end;
 
 procedure game();
 begin
-  init;
-  lives:=3;
-  speed:=10;
-  score:=0;
-
   setColor(0, 0, 128);
   fillRect(0, 0, getWidth, getHeight);
   setColor(255, 255, 0);
@@ -183,6 +178,9 @@ begin
 end;
 
 begin
+  init;
+  lives:=3;
+  speed:=10;
   menu:=1;
   waitInMenu:=true;
 
@@ -203,7 +201,7 @@ begin
 
   if ((getKeyPressed = KE_KEY2) or (keyToAction(getKeyPressed) = GA_UP  )) then begin menu:=1;end;
   if ((getKeyPressed = KE_KEY8) or (keyToAction(getKeyPressed) = GA_DOWN)) then begin menu:=2;end;
-  if ((getKeyPressed = KE_KEY5) or (keyToAction(getKeyPressed) = GA_FIRE)) and (menu=1) then game;
+  if ((getKeyPressed = KE_KEY5) or (keyToAction(getKeyPressed) = GA_FIRE)) and (menu=1) then game;//waitInMenu:=false;
   if ((getKeyPressed = KE_KEY5) or (keyToAction(getKeyPressed) = GA_FIRE)) and (menu=2) then halt;
 
   if menu=1 then
@@ -228,4 +226,5 @@ begin
   delay(100);
   repaint;
   until not waitInMenu;
+
 end.

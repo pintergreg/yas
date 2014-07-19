@@ -1,8 +1,27 @@
 program yas;
 const max=103;
 var x,y:Array[0..max] of integer;
-    score, lives, hiscore, clock, speed, dx, dy, px, py, i, snake, menu:integer;
-    finish, waitInMenu:boolean;
+    score, lives, hiscore, clock, speed, dx, dy, px, py, i, snake:integer;
+    finish:boolean;
+
+function encodetext(w:string):string;
+  var i:integer;
+begin
+ for i:=0 to length(w) do
+ begin
+  if (getChar(w,i)='1') then w:=setChar(w,chr(246),i);
+  if (getChar(w,i)='2') then w:=setChar(w,chr(252),i);
+  if (getChar(w,i)='3') then w:=setChar(w,chr(243),i);
+  if (getChar(w,i)='4') then w:=setChar(w,chr(244),i);
+  if (getChar(w,i)='5') then w:=setChar(w,chr(250),i);
+  if (getChar(w,i)='6') then w:=setChar(w,chr(233),i);
+  if (getChar(w,i)='7') then w:=setChar(w,chr(225),i);
+  if (getChar(w,i)='8') then w:=setChar(w,chr(251),i);
+  if (getChar(w,i)='9') then w:=setChar(w,chr(237),i);
+  if (getChar(w,i)='0') then w:=setChar(w,chr(228),i);
+ end;
+ encodeText:=w;
+end;
 
 procedure drawStats();
   var s:string;j:integer;
@@ -82,18 +101,24 @@ begin
   end;
 end;
 
-procedure game();
 begin
   init;
   lives:=3;
   speed:=10;
-  score:=0;
 
   setColor(0, 0, 128);
   fillRect(0, 0, getWidth, getHeight);
   setColor(255, 255, 0);
   drawRect(9,9,221,261);
   drawRect(8,8,223,263);
+
+  setColor(255, 255, 0);
+  setFont(FONT_FACE_SYSTEM, FONT_STYLE_BOLD, FONT_SIZE_LARGE);
+  drawText('SNAKE', 20, 110);
+  drawText('Yet Another', (getWidth-getStringWidth('Yet Another'))/2, 75);
+  repaint;
+
+  delay(10000);
 
   setcolor(255,255,255);
   fillrect(x[0],y[0],10,10);
@@ -104,6 +129,7 @@ begin
   drawpoint;
   repaint;
 
+ {main loop}
  while (finish=false) and (lives>0) do
  begin
 
@@ -113,7 +139,7 @@ begin
       if ((getKeyPressed = KE_KEY6) or (keyToAction(getKeyPressed) = GA_RIGHT)) and not (dx=-10) then begin dx:=10;dy:=0;end;
       if ((getKeyPressed = KE_KEY2) or (keyToAction(getKeyPressed) = GA_UP   )) and not (dy=10 ) then begin dy:=-10;dx:=0;end;
       if ((getKeyPressed = KE_KEY8) or (keyToAction(getKeyPressed) = GA_DOWN )) and not (dy=-10) then begin dy:=10;dx:=0;end;
-      if ((getKeyPressed = KE_POUND)) then begin finish:=true;waitInMenu:=true;end;
+      if ((getKeyPressed = KE_POUND)) then finish:=true;
     end;
 
   if clock=speed then
@@ -180,52 +206,4 @@ begin
   {regular cyclic delay}
   delay(20);
  end;
-end;
-
-begin
-  menu:=1;
-  waitInMenu:=true;
-
-  repeat
-  setColor(0, 0, 128);
-  fillRect(0, 0, getWidth, getHeight);
-  setColor(255, 255, 0);
-  drawRect(9,9,221,261);
-  drawRect(8,8,223,263);
-
-  setColor(255, 255, 0);
-  setFont(FONT_FACE_SYSTEM, FONT_STYLE_BOLD, FONT_SIZE_LARGE);
-  drawText('SNAKE', (getWidth-getStringWidth('SNAKE'))/2, 95);
-  drawText('Yet Another', (getWidth-getStringWidth('Yet Another'))/2, 70);
-  setFont(FONT_FACE_SYSTEM, FONT_STYLE_PLAIN, FONT_SIZE_MEDIUM);
-
-  drawText('YAS v1.0, Gerg'+chr(244)+' Pint'+chr(233)+'r', (getWidth-getStringWidth('YAS v1.0, Gergo Pinter'))/2, 280);
-
-  if ((getKeyPressed = KE_KEY2) or (keyToAction(getKeyPressed) = GA_UP  )) then begin menu:=1;end;
-  if ((getKeyPressed = KE_KEY8) or (keyToAction(getKeyPressed) = GA_DOWN)) then begin menu:=2;end;
-  if ((getKeyPressed = KE_KEY5) or (keyToAction(getKeyPressed) = GA_FIRE)) and (menu=1) then game;
-  if ((getKeyPressed = KE_KEY5) or (keyToAction(getKeyPressed) = GA_FIRE)) and (menu=2) then halt;
-
-  if menu=1 then
-  begin
-    setColor(255, 255, 255);
-    setFont(FONT_FACE_SYSTEM, FONT_STYLE_BOLD, FONT_SIZE_MEDIUM);
-    drawText('START', (getWidth-getStringWidth('START'))/2, 150);
-    setColor(255, 255, 0);
-    setFont(FONT_FACE_SYSTEM, FONT_STYLE_PLAIN, FONT_SIZE_MEDIUM);
-    drawText('Exit', (getWidth-getStringWidth('Exit'))/2, 170);
-  end;
-  if menu=2 then
-  begin
-    setColor(255, 255, 0);
-    setFont(FONT_FACE_SYSTEM, FONT_STYLE_PLAIN, FONT_SIZE_MEDIUM);
-    drawText('Start', (getWidth-getStringWidth('Start'))/2, 150);
-    setColor(255, 255, 255);
-    setFont(FONT_FACE_SYSTEM, FONT_STYLE_BOLD, FONT_SIZE_MEDIUM);
-    drawText('EXIT', (getWidth-getStringWidth('EXIT'))/2, 170);
-  end;
-
-  delay(100);
-  repaint;
-  until not waitInMenu;
 end.

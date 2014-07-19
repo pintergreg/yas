@@ -87,7 +87,6 @@ begin
   init;
   lives:=3;
   speed:=10;
-  score:=0;
 
   setColor(0, 0, 128);
   fillRect(0, 0, getWidth, getHeight);
@@ -228,4 +227,5 @@ begin
   delay(100);
   repaint;
   until not waitInMenu;
+
 end.
