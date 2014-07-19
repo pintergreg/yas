@@ -25,8 +25,6 @@ end;
 procedure drawStats();
   var s:string;i,j:integer;
 begin
-  setColor(0, 0, 128);
-  fillrect(9,240,112,20);
   setColor(255, 255, 255);
   drawText('Score: '+integertostring(score), 9, 240);
   for i:=1 to lives do
@@ -85,7 +83,7 @@ repaint;
       if ((getKeyPressed = KE_POUND)) then finish:=true;
     end;
 
-  if speed=20 then
+  if speed=10 then
   begin
     setcolor(00,0,128);
     fillrect(x[0],y[0],10,10);
@@ -117,7 +115,7 @@ repaint;
   {if midlet is interrupted, halt is better}
   if isMidletPaused then halt;
   {regular cyclic delay}
-  delay(20);
+  delay(40);
 
  end;
 end.

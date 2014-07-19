@@ -25,8 +25,6 @@ end;
 procedure drawStats();
   var s:string;i,j:integer;
 begin
-  setColor(0, 0, 128);
-  fillrect(9,240,112,20);
   setColor(255, 255, 255);
   drawText('Score: '+integertostring(score), 9, 240);
   for i:=1 to lives do
@@ -42,7 +40,7 @@ begin
   px:=(random(22)+1)*10;
   py:=(random(22)+1)*10;
   setColor(255, 255, 255);
-  fillRect(px, py, 10, 10);
+  fillRoundRect(px, py, 10, 10, 2, 2);
 end;
 
 begin
@@ -76,48 +74,37 @@ repaint;
  while finish=false do
  begin
 
-    {game screen}
-    begin
-      if ((getKeyPressed = KE_KEY4) or (keyToAction(getKeyPressed) = GA_LEFT )) then begin dx:=-10;dy:=0;end;
-      if ((getKeyPressed = KE_KEY6) or (keyToAction(getKeyPressed) = GA_RIGHT)) then begin dx:=10;dy:=0;end;
-      if ((getKeyPressed = KE_KEY2) or (keyToAction(getKeyPressed) = GA_UP  )) then begin dy:=-10;dx:=0;end;
-      if ((getKeyPressed = KE_KEY8) or (keyToAction(getKeyPressed) = GA_DOWN)) then begin dy:=10;dx:=0;end;
-      if ((getKeyPressed = KE_POUND)) then finish:=true;
-    end;
-
-  if speed=20 then
+{game screen}
   begin
-    setcolor(00,0,128);
-    fillrect(x[0],y[0],10,10);
-
-    if (x[0]+dx>=10) and (x[0]+dx<=220) and (y[0]+dy>=10)  and (y[0]+dy<=220)then
-    begin
-    x[0]:=x[0]+dx;
-    y[0]:=y[0]+dy;
-
-      {scoring}
-      if (px=x[0]) and (py=y[0]) then
-      begin
-        drawpoint;
-        score:=score+1;
-        drawstats;
-      end;
-    end;
-
-    setcolor(255,255,255);
-    fillrect(x[0],y[0],10,10);
-
-    repaint;
-    speed:=1;
+    if ((getKeyPressed = KE_KEY4) or (keyToAction(getKeyPressed) = GA_LEFT )) then begin dx:=-10;dy:=0;end;
+    if ((getKeyPressed = KE_KEY6) or (keyToAction(getKeyPressed) = GA_RIGHT)) then begin dx:=10;dy:=0;end;
+    if ((getKeyPressed = KE_KEY2) or (keyToAction(getKeyPressed) = GA_UP  )) then begin dy:=-10;dx:=0;end;
+    if ((getKeyPressed = KE_KEY8) or (keyToAction(getKeyPressed) = GA_DOWN)) then begin dy:=10;dx:=0;end;
+    if ((getKeyPressed = KE_POUND)) then finish:=true;
   end;
 
-  speed:=speed+1;
+if speed=10 then
+begin
+setcolor(00,0,128);
+fillrect(x[0],y[0],10,10);
 
+if (x[0]+dx>=10) and (x[0]+dx<=220) and (y[0]+dy>=10)  and (y[0]+dy<=220)then
+begin
+x[0]:=x[0]+dx;
+y[0]:=y[0]+dy;
+end;
 
+setcolor(255,255,255);
+fillrect(x[0],y[0],10,10);
+
+repaint;
+speed:=1;
+end;
+speed:=speed+1;
   {if midlet is interrupted, halt is better}
   if isMidletPaused then halt;
   {regular cyclic delay}
-  delay(20);
+  delay(40);
 
  end;
 end.
